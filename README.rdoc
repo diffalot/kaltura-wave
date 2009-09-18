@@ -1,0 +1,18 @@
+= kaltura-wave
+
+Kaltura-Wave is a google wave widget that embeds a KDP in a wave and shares the playstate of the KDP via javascript.
+
+The server system that serves the kdps to the waves is run on Sinatra.
+
+This project is currently in the research phase.
+
+= Links for research
+
+http://www.kaltura.org/kdp-basic-usage-embedding-html-pages-and-playback
+http://www.kaltura.org/kdp-apis-about-javascript-integration
+
+= Copyright
+
+This library is released in compliance with the GNU Affero General Public License.  See LICENSE for more details.
+
+Copyright (c) 2009 Your Name Here
