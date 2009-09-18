@@ -1,6 +1,6 @@
 = kaltura-wave
 
-Kaltura-Wave is a google wave widget that embeds a KDP in a wave and shares the playstate of the KDP via javascript.
+Kaltura-Wave is a google wave gadget that embeds a KDP in a wave and shares the playstate of the KDP via javascript.
 
 The server system that serves the kdps to the waves is run on Sinatra.
 
@@ -11,6 +11,8 @@ This project is currently in the research phase.
 http://www.kaltura.org/kdp-basic-usage-embedding-html-pages-and-playback
 
 http://www.kaltura.org/kdp-apis-about-javascript-integration
+
+http://code.google.com/apis/wave/extensions/gadgets/guide.html
 
 = Copyright
 
