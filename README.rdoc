@@ -6,6 +6,11 @@ The server system that serves the kdps to the waves is run on Sinatra.
 
 This project is currently in the research phase.
 
+= Proposed Workflow
+
+User adds the widget to a wave and is presented with the add media widget.  Upon close the add media widget stores the entryid in the wave and opens up a kdp with the stored entry id.
+
+Entry editing... is an unknown.  Does this just pull up the editor and updatge the state with a new entry id...  No, it shouldn't be that simple.  The state of the wave must record what _mode_ the wave is in: creation, playback, modification.  All states muyst be observed via javascript.
 = Links for research
 
 http://www.kaltura.org/kdp-basic-usage-embedding-html-pages-and-playback
