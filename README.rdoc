@@ -9,6 +9,7 @@ This project is currently in the research phase.
 = Links for research
 
 http://www.kaltura.org/kdp-basic-usage-embedding-html-pages-and-playback
+
 http://www.kaltura.org/kdp-apis-about-javascript-integration
 
 = Copyright
