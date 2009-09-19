@@ -32,8 +32,6 @@
 
       <div id="player" style="display:none">
       </div>
-      <script type="text/javascript" src="js/jquery-1.2.6.min.js"></script>
-      <script type="text/javascript" src="js/swfobject.js"></script>
       <script type="text/javascript">
         // Configuration for KPlayer
         var kparams = {
