@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
-  <ModulePrefs title="Kaltura Wave" height="600">
+  <ModulePrefs title="Kaltura Wave" height="350">
     <Require feature="wave" />
     <Require feature="dynamic-height" />
     <Require feature="setprefs" />
