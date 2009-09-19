@@ -6,13 +6,13 @@ function init() {
 
   // Define Tabs
   tabs.addTab("Play", {
-                      contentContainer: document.getElementById("kplayer")
+                      contentContainer: document.getElementById("player")
                       });
   tabs.addTab("Edit", {
-                      contentContainer: document.getElementById("keditor")
+                      contentContainer: document.getElementById("editor")
                       });
   tabs.addTab("Add Media", {
-                           contentContainer: document.getElementById("kmedia_adder")
+                           contentContainer: document.getElementById("media_adder")
                            });
 };
 

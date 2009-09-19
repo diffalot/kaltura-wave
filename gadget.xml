@@ -13,24 +13,8 @@
       </div>
       <div id="editor"style="display:none">Editor Goes Here</div>
       
-      <script type="text/javascript">
-        // Set Player as default tab
-        var tabs = new gadgets.TabSet(__MODULE_ID__, "Play");
-        function init() {
-          // Define Tabs
-          tabs.addTab("Play", {
-                      contentContainer: document.getElementById("player")
-                      });
-          tabs.addTab("Edit", {
-                      contentContainer: document.getElementById("editor")
-                      });
-          tabs.addTab("Add Media", {
-                           contentContainer: document.getElementById("media_adder")
-                           });
-          };
-        // Call init function to initialize and display tabs.
-        gadgets.util.registerOnLoadHandler(init);
-      </script>
+      <script type="text/javascript" src="js/kaltura-wave.js"></script>
+      
       <script type="text/javascript" src="js/jquery-1.2.6.min.js"></script>     <div id="media_adder" style="display:none">Media Management Goes Here</div>
     ]]>
   </Content>
