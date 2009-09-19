@@ -31,7 +31,10 @@
       </script>
 
       <div id="player" style="display:none">
+      Player goes here
+      <div id="kplayer"></div>
       </div>
+      <script type="text/javascript" src="js/swfobject.js"></script>
       <script type="text/javascript">
         // Configuration for KPlayer
         var kparams = {
