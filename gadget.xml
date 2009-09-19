@@ -7,6 +7,20 @@
   </ModulePrefs>
   <Content type="html">
     <![CDATA[
+      <script type="text/javascript" src="js/jquery-1.2.6.min.js"></script>
+      <script type="text/javascript" src="js/swfobject.js"></script>
+      <script type="text/javascript">
+        var params = {
+                     allowscriptaccess: "always",
+                     allownetworking: "all",
+                     allowfullscreen: "true",
+                     wmode: "opaque"
+                     };
+        var flashVars = {
+                        entryId: "hsgxym7h34"
+                        };
+        swfobject.embedSWF("http://www.kaltura.com/kwidget/wid/_39061/ui_conf_id/1008311", "kplayer", "400", "360", "9.0.0", false, flashVars, params);
+      </script>
       <script type="text/javascript">
         // Set Player as default tab
         var tabs = new gadgets.TabSet(__MODULE_ID__, "Play");
@@ -28,20 +42,6 @@
         
         // Call init function to initialize and display tabs.
         gadgets.util.registerOnLoadHandler(init);
-      </script>
-      <script type="text/javascript" src="js/jquery-1.2.6.min.js"></script>
-      <script type="text/javascript" src="js/swfobject.js"></script>
-      <script type="text/javascript">
-        var params = {
-                     allowscriptaccess: "always",
-                     allownetworking: "all",
-                     allowfullscreen: "true",
-                     wmode: "opaque"
-                     };
-        var flashVars = {
-                        entryId: "hsgxym7h34"
-                        };
-        swfobject.embedSWF("http://www.kaltura.com/kwidget/wid/_39061/ui_conf_id/1008311", "kplayer", "400", "360", "9.0.0", false, flashVars, params);
       </script>
 
       <div id="kplayer" style="display:none"></div>
