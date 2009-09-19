@@ -12,7 +12,6 @@
   <Content type="html">
     <![CDATA[
       <div id="player" style="display:none">
-        Player Goes Here
         <div id="kplayer"></div>
       </div>
       <div id="editor"style="display:none">Editor Goes Here</div>
