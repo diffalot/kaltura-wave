@@ -29,6 +29,8 @@ http://www.kaltura.org/kdp-apis-about-javascript-integration
 
 http://code.google.com/apis/wave/extensions/gadgets/guide.html
 
+http://code.google.com/apis/gadgets/docs/ui.html
+
 = Copyright
 
 This library is released in compliance with the GNU Affero General Public License.  See LICENSE for more details.
