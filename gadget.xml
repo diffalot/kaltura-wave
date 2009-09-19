@@ -3,7 +3,6 @@
   <ModulePrefs title="Kaltura Wave" height="370">
     <Require feature="wave" />
     <Require feature="dynamic-height" />
-    <Require feature="setprefs" />
     <Require feature="tabs" />
   </ModulePrefs>
   <Content type="html">
