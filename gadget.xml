@@ -15,7 +15,10 @@
         <div id="kplayer"></div>
       </div>
       <div id="editor"style="display:none">Editor Goes Here</div>
-      <div id="media_adder" style="display:none">Media Management Goes Here</div>
+      <div id="media_adder" style="display:none">
+        <h1>Media Management Goes Here</h1>
+        <p>Media Management, by virtue of it's user centric and user specified nature of allowing users to add files from their own computer terminals, is a private matter.  While the wave state is shared as the editing and playback tabs are active, adding media is a purely personal matter.  Neither the switch to the adding tab nor the state of the adding widget shall ever be recorded.</p>
+      </div>
       
       <script type="text/javascript">
         // Set Player as default tab
