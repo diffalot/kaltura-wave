@@ -7,7 +7,7 @@
   </ModulePrefs>
   <Content type="html">
     <![CDATA[
-      <script type="text/javascript" src="js/kaltura-wave.js">
+      <script type="text/javascript">
         // Set Player as default tab
         var tabs = new gadgets.TabSet(__MODULE_ID__, "Play");
         
