@@ -49,8 +49,8 @@
         swfobject.embedSWF("http://www.kaltura.com/kwidget/wid/_39061/ui_conf_id/1008311", "kplayer", "400", "360", "9.0.0", false, kflashVars, kparams);
       </script>
 
-      <div id="keditor"style="display:none">Editor Goes Here</div>
-      <div id="kmedia_adder" style="display:none">Media Management Goes Here</div>
+      <div id="editor"style="display:none">Editor Goes Here</div>
+      <div id="media_adder" style="display:none">Media Management Goes Here</div>
     ]]>
   </Content>
 </Module>
