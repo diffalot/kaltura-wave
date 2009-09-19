@@ -8,7 +8,7 @@ This project is currently in the research phase.
 
 The canonical version of the Kaltura Wave gadget XML will be hosted on Kaltura.org 's SVN.
 
-Development XML files are located in the raw on gthub, for example:
+Development XML files are located in the raw on Github, for example:
 
 http://github.com/papyromancer/kaltura-wave/raw/master/gadget.xml
 
@@ -23,10 +23,10 @@ In all probablity, this entire system could be run off kaltura's svn.
 
 = Links for research
 
-# http://www.kaltura.org/kdp-basic-usage-embedding-html-pages-and-playback
-# http://www.kaltura.org/kdp-apis-about-javascript-integration
-# http://code.google.com/apis/wave/extensions/gadgets/guide.html
-# http://code.google.com/apis/gadgets/docs/ui.html
+* http://www.kaltura.org/kdp-basic-usage-embedding-html-pages-and-playback
+* http://www.kaltura.org/kdp-apis-about-javascript-integration
+* http://code.google.com/apis/wave/extensions/gadgets/guide.html
+* http://code.google.com/apis/gadgets/docs/ui.html
 
 = Copyright
 
