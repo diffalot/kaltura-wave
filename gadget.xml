@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="Kaltura Wave">
+    <Require feature="wave" /> 
+  </ModulePrefs>
+  <Content type="html">
+    <![CDATA[
+      <div id="kplayer"></div>
+      ## There will almost surely need to be a javascript that monitors the kdp and writes state info to the wave
+      <script type="text/javascript">
+        var params = {
+                     allowscriptaccess: "always",
+                     allownetworking: "all",
+                     allowfullscreen: "true",
+                     wmode: "opaque"
+                     };
+        var flashVars = {
+                        entryId: "hsgxym7h34"  ## @kaltura_entry_id or equivalent variable
+                        };
+        swfobject.embedSWF("http://www.kaltura.com/kwidget/wid/_{PARTNERID}/ui_conf_id/{PLAYER_CONFIGURATION}", "kplayer", "400", "360", "9.0.0", false, flashVars, params);
+      </script>
+    ]]>
+  </Content>
+</Module>
