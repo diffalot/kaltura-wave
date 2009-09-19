@@ -46,7 +46,7 @@
         var kflashVars = {
                       entryId: "hsgxym7h34"
                       };
-        swfobject.embedSWF("http://www.kaltura.com/kwidget/wid/_39061/ui_conf_id/1008311", "kplayer", "400", "360", "9.0.0", false, kflashVars, kparams);
+        //swfobject.embedSWF("http://www.kaltura.com/kwidget/wid/_39061/ui_conf_id/1008311", "kplayer", "400", "360", "9.0.0", false, kflashVars, kparams);
       </script>
 
       <div id="editor"style="display:none">Editor Goes Here</div>
