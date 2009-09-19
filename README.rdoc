@@ -2,9 +2,17 @@
 
 Kaltura-Wave is a google wave gadget that embeds a KDP in a wave and shares the playstate of the KDP via javascript.
 
-The server system that serves the kdps to the waves is run on Sinatra.
-
 This project is currently in the research phase.
+
+= Gadget XML
+
+The canonical version of the Kaltura Wave gadget XML will be hosted on Kaltura.org 's SVN.
+
+Development XML files are located in the raw on gthub, for example:
+
+http://github.com/papyromancer/kaltura-wave/raw/master/gadget.xml
+
+If you've forked the github project just replace 'papyromancer' with your user name.
 
 = Proposed Workflow
 
