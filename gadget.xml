@@ -6,6 +6,8 @@
   <Content type="html">
     <![CDATA[
       <div id="kplayer"></div>
+      <script type="text/javascript" src="js/jquery-1.2.6.min.js"></script>
+      <script type="text/javascript" src="js/swfobject.js"></script>
       <script type="text/javascript">
         var params = {
                      allowscriptaccess: "always",
