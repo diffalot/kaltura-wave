@@ -7,6 +7,7 @@
     <Require feature="wave" />
     <Require feature="dynamic-height" />
     <Require feature="tabs" />
+    <Require feature="flash" />
   </ModulePrefs>
   <Content type="html">
     <![CDATA[
@@ -15,6 +16,7 @@
         <div id="kplayer"></div>
       </div>
       <div id="editor"style="display:none">Editor Goes Here</div>
+      <div id="media_adder" style="display:none">Media Management Goes Here</div>
       
       <script type="text/javascript">
         // Set Player as default tab
@@ -33,9 +35,23 @@
         };
         // Call init function to initialize and display tabs.
         gadgets.util.registerOnLoadHandler(init);
+
+        // Set Variables for kplayer
+        var kparams = {
+                      allowscriptaccess: "always",
+                      allownetworking: "all",
+                      allowfullscreen: "true",
+                      wmode: "opaque"
+                      };
+        var kflashVars = {
+                      entryId: "hsgxym7h34"
+                      };
+        // embed kplayer
+        gadgets.flash.embedFlash("http://www.kaltura.com/kwidget/wid/_39061/ui_conf_id/1008311", "kplayer", {"400", "360", "9.0.0", false, kflashVars, kparams});
       </script>
       
-      <script type="text/javascript" src="js/jquery-1.2.6.min.js"></script>     <div id="media_adder" style="display:none">Media Management Goes Here</div>
+      <script type="text/javascript" src="js/jquery-1.2.6.min.js"></script>     
+      
     ]]>
   </Content>
 </Module>
