@@ -14,7 +14,7 @@ function init() {
   tabs.addTab("Add Media", {
                            contentContainer: document.getElementById("kmedia_adder")
                            });
-}
+};
 
 // Call init function to initialize and display tabs.
 gadgets.util.registerOnLoadHandler(init);
