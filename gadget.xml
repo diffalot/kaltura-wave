@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
-  <ModulePrefs title="Kaltura Wave" height="370">
+  <ModulePrefs title="Kaltura Wave"
+               height="370"
+               author="papyromancer"
+               author_email="papyromancer@lightcorp.net">
     <Require feature="wave" />
     <Require feature="dynamic-height" />
     <Require feature="tabs" />
@@ -13,7 +16,24 @@
       </div>
       <div id="editor"style="display:none">Editor Goes Here</div>
       
-      <script type="text/javascript" src="http://github.com/papyromancer/kaltura-wave/raw/testing/js/kaltura-wave.js"></script>
+      <script type="text/javascript">
+        // Set Player as default tab
+        var tabs = new gadgets.TabSet(__MODULE_ID__, "Play");
+        function init() {
+          // Define Tabs
+          tabs.addTab("Play", {
+                              contentContainer: document.getElementById("player")
+                              });
+          tabs.addTab("Edit", {
+                              contentContainer: document.getElementById("editor")
+                              });
+          tabs.addTab("Add Media", {
+                              contentContainer: document.getElementById("media_adder")
+                              });
+        };
+        // Call init function to initialize and display tabs.
+        gadgets.util.registerOnLoadHandler(init);
+      </script>
       
       <script type="text/javascript" src="js/jquery-1.2.6.min.js"></script>     <div id="media_adder" style="display:none">Media Management Goes Here</div>
     ]]>
