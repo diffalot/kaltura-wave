@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
-  <ModulePrefs title="Kaltura Wave">
+  <ModulePrefs title="Kaltura Wave" height="600">
     <Require feature="wave" />
     <Require feature="dynamic-height" />
+    <Require feature="setprefs" />
+    <Require feature="tabs" />
   </ModulePrefs>
   <Content type="html">
     <![CDATA[
       <div id="kplayer"></div>
       <script type="text/javascript" src="js/jquery-1.2.6.min.js"></script>
       <script type="text/javascript" src="js/swfobject.js"></script>
+      <script type="text/javascript" src="js/kaltura-wave.js"></script>
       <script type="text/javascript">
         var params = {
                      allowscriptaccess: "always",
