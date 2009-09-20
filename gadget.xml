@@ -21,6 +21,10 @@
         <p>Neither the switch to the 'Add Media' tab nor the state of the 'Add Media' widget shall ever be recorded within the wave state.</p>
         <p>Media management is not available to wave state.</p>
       </div>
+      <div id="debug"style="display:none">
+        <h1>Wave State Debug</h1>
+        <p>All variables stored in the wave state are listed here.</p>
+      </div>
       
       <script type="text/javascript">
         // Set Player as default tab
@@ -38,6 +42,10 @@
           tabs.addTab("Add Media", {
                               contentContainer: document.getElementById("media_adder")
                               });
+          tabs.addTab("Debug", {
+                              contentContainer: document.getElementById("debug")
+                              });
+
         };
         // Call init function to initialize and display tabs.
         gadgets.util.registerOnLoadHandler(init);
