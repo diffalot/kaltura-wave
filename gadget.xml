@@ -57,8 +57,7 @@
                       allowscriptaccess: "always",
                       allownetworking: "all",
                       allowfullscreen: "true",
-                      wmode: "opaque",
-                      emptyF=onKdpReady&readyF=onKdpReady: "kflashVars"
+                      wmode: "opaque"
                       };
         var kflashVars = {
                       entry_id: "knrwbq7z4o",
