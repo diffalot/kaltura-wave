@@ -57,11 +57,11 @@
                       allowscriptaccess: "always",
                       allownetworking: "all",
                       allowfullscreen: "true",
-                      wmode: "opaque"
+                      wmode: "opaque",
+                      width: "400",
+                      height: "290"
                       };
         var kflashVars = {
-                      width: "400",
-                      height: "290",
                       entry_id: "knrwbq7z4o"
                       };
         
