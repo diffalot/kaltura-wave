@@ -60,6 +60,8 @@
                       wmode: "opaque"
                       };
         var kflashVars = {
+                      width: "400",
+                      height: "290",
                       entry_id: "knrwbq7z4o"
                       };
         
