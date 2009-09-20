@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
   <ModulePrefs title="Kaltura Wave"
-               height="3220"
+               height="320"
                author="papyromancer"
                author_email="papyromancer@lightcorp.net">
     <Require feature="wave" />
@@ -12,7 +12,7 @@
   <Content type="html">
     <![CDATA[
       <div id="player" style="display:none">
-        <div id="kplayer"></div>
+        <div id="kplayer" style="text-align:center"></div>
       </div>
       <div id="editor"style="display:none">Editor Goes Here</div>
       <div id="media_adder" style="display:none">
