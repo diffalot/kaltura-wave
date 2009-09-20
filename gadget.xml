@@ -62,12 +62,9 @@
                       height: "290",
                       entry_id: "knrwbq7z4o"
                       };
-        var kflashVars = {
-                      entry_id: "knrwbq7z4o"
-                      };
         
         // embed kplayer
-        gadgets.flash.embedFlash("http://www.kaltura.com/kwidget/wid/_39061/ui_conf_id/1008311", "kplayer", kflashVars, kparams );
+        gadgets.flash.embedFlash("http://www.kaltura.com/kwidget/wid/_39061/ui_conf_id/1008311", "kplayer", "9.0.0", kparams );
 
         </script>
     ]]>
