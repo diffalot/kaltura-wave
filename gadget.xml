@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
   <ModulePrefs title="Kaltura Wave"
-               height="390"
+               height="3220"
                author="papyromancer"
                author_email="papyromancer@lightcorp.net">
     <Require feature="wave" />
