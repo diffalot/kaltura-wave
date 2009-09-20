@@ -50,7 +50,7 @@
                       wmode: "opaque"
                       };
         var kflashVars = {
-                      entryId: "knrwbq7z4o"
+                      entry_id: "knrwbq7z4o"
                       };
         
         // embed kplayer
