@@ -54,7 +54,7 @@
 
         // Set Variables for kplayer
         var kflashVars = {
-                      entry_id: "knrwbq7z4o"
+                      entryid: "knrwbq7z4o"
                       }; 
         var kparams = {
                       allowscriptaccess: "always",
