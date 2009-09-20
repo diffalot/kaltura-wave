@@ -53,6 +53,9 @@
         gadgets.util.registerOnLoadHandler(init);
 
         // Set Variables for kplayer
+        var flashVars = {
+                      entryId: "knrwbq7z4o"
+                      }; 
         var kparams = {
                       allowscriptaccess: "always",
                       allownetworking: "all",
@@ -60,10 +63,9 @@
                       wmode: "opaque",
                       width: "400",
                       height: "290",
-                      entryId: "knrwbq7z4o"
+                      flashVars
                       };
-        
-        // embed kplayer
+                // embed kplayer
         gadgets.flash.embedFlash("http://www.kaltura.com/kwidget/wid/_39061/ui_conf_id/1008311", "kplayer", "9.0.0", kparams );
 
         </script>
