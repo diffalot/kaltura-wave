@@ -60,18 +60,11 @@
                       wmode: "opaque"
                       };
         var kflashVars = {
-                      entry_id: "knrwbq7z4o",
-                      emptyF: "onKdpReady", 
-                      readyF: "onKdpReady"
+                      entry_id: "knrwbq7z4o"
                       };
         
         // embed kplayer
         gadgets.flash.embedFlash("http://www.kaltura.com/kwidget/wid/_39061/ui_conf_id/1008311", "kplayer", "400", "290", kflashVars, kparams );
-
-        // When KDP is ready load media
-        function onKdpReady(playerId){
-          alert("player "+playerId+" is ready");
-        }
 
         </script>
     ]]>
