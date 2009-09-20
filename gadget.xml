@@ -17,7 +17,7 @@
       <div id="editor"style="display:none">Editor Goes Here</div>
       <div id="media_adder" style="display:none">
         <h1>Media Management</h1>
-        <p>Media Management, by virtue of it's user centric and user specific nature of allowing users to add files from their own computer terminals, is a private matter.  While the wave state is shared within the editing and playback tabs, adding media is a purely personal matter.  Neither the switch to the 'Add Media' tab nor the state of the 'Add Media' widget shall ever be recorded within the wave state.  Media management is not available to wave state.</p>
+        <p>Media Management, by virtue of it's user centric and user specific nature of allowing users to add files from their own computer terminals, is a private action.  While the wave state is shared within the editing and playback tabs, adding media is a purely personal task, and exposing the add media widget to group editing is likely to cause innumerable probs.  Neither the switch to the 'Add Media' tab nor the state of the 'Add Media' widget shall ever be recorded within the wave state.  Media management is not available to wave state.</p>
       </div>
       
       <script type="text/javascript">
