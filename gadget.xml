@@ -54,7 +54,7 @@
                       };
         
         // embed kplayer
-        gadgets.flash.embedFlash("http://www.kaltura.com/kwidget/wid/_39061/ui_conf_id/1008311", "kplayer", kflashVars, kparams);
+        gadgets.flash.embedFlash("http://www.kaltura.com/kwidget/wid/_39061/ui_conf_id/1008311", "kplayer", kflashVars );
       </script>
     ]]>
   </Content>
