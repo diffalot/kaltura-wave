@@ -47,28 +47,51 @@
           tabs.addTab("Debug", {
                               contentContainer: document.getElementById("debug")
                               });
-
+          // Make wave state aware
+            if (wave && wave.isInWaveContainer()) {
+              wave.setStateCallback(stateUpdated);
+            }
         };
+
+        // Get state for the debug console
+        var debug = document.getElementById('debug');
+        function stateUpdated() {
+          if(!wave.getState()) {
+            debug.innerHTML = "The state is empty."
+          }
+          else {
+            debug.innerHTML = "The state is " + wave.getState();
+          } 
+        }
+
         // Call init function to initialize and display tabs.
         gadgets.util.registerOnLoadHandler(init);
-
-        // Set Variables for kplayer
-        var kvars = {
-                      entryid: "knrwbq7z4o"
+        
+        // Function to populate kplayer with current video
+        function wavePlay(entry_id) {
+        
+          // Set Variables for kplayer
+          var kvars = {
+                      entry_id: entry_id //"knrwbq7z4o"
                       };
-        // kflashvars should be constructed from the kvars object
-        var kflashvars = "entry_id=knrwbq7z4o"
-        var kparams = {
-                      allowscriptaccess: "always",
-                      allownetworking: "all",
-                      allowfullscreen: "true",
-                      wmode: "opaque",
-                      width: "400",
-                      height: "290"
-                      };
-                // embed kplayer
-        gadgets.flash.embedFlash("http://www.kaltura.com/kwidget/wid/_39061/ui_conf_id/1008311?"+kflashvars, "kplayer", "9.0.0", kparams );
-
+          
+          // kflashvars should be constructed from the kvars object
+          var kflashvars = "entry_id="+entry_id // knrwbq7z4o"
+          
+          var kparams = {
+                        allowscriptaccess: "always",
+                        allownetworking: "all",
+                        allowfullscreen: "true",
+                        wmode: "opaque",
+                        width: "400",
+                        height: "290"
+                        };
+          // embed kplayer
+          gadgets.flash.embedFlash("http://www.kaltura.com/kwidget/wid/_39061/ui_conf_id/1008311?"+kflashvars, "kplayer", "9.0.0", kparams );
+        };
+        
+        // Load a file for playing
+        wavePlay("knrwbq7z4o");
         </script>
     ]]>
   </Content>
