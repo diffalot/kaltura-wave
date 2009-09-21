@@ -57,7 +57,7 @@
                       entryid: "knrwbq7z4o"
                       };
         // kflashvars should be constructed from the kvars object
-        var kflashvars = 'entryId="knrwbq7z4o"'
+        var kflashvars = 'entry_id="knrwbq7z4o"'
         var kparams = {
                       allowscriptaccess: "always",
                       allownetworking: "all",
