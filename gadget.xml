@@ -22,8 +22,9 @@
         <p>Media management is not available to wave state.</p>
       </div>
       <div id="debug"style="display:none">
-        <h1>Wave State Debug</h1>
-        <p>All variables stored in the wave state are listed here.</p>
+        <div id="debug_message"></div>
+        <input type=button value="load state" id="load_state" onClick="debugState()">
+        <div id="debug_state"></div>
       </div>
       
       <script type="text/javascript" src="js/jquery-1.2.6.min.js"></script>
@@ -54,15 +55,25 @@
         };
 
         // Get state for the debug console
-        var debug = document.getElementById('debug');
+        var debug_state = document.getElementById('debug_state');
+        var debug_message = document.getElementById('debug_message');
         function stateUpdated() {
           if(!wave.getState()) {
-            debug.innerHTML = "The state is empty."
+            debug_state.innerHTML = "The state is empty.";
           }
           else {
-            debug.innerHTML = "The state is " + wave.getState();
+            debug_state.innerHTML = "The state is " + wave.getState();
           } 
-        }
+        };
+        function debugState() {
+          stateUpdated();
+        };
+        function changeState(key, value) {
+        //  wave.getState().submitDelta({(key): (value)});
+        };
+        function debugMessage(message) {
+          debug_message.innerHTML = "Registered Message: " + message;
+        };
 
         // Call init function to initialize and display tabs.
         gadgets.util.registerOnLoadHandler(init);
@@ -90,7 +101,20 @@
           gadgets.flash.embedFlash("http://www.kaltura.com/kwidget/wid/_39061/ui_conf_id/1008311?"+kflashvars, "kplayer", "9.0.0", kparams );
         };
         
-        // Load a file for playing
+        // Make sure there is an entry_id in wave state
+        function entrySanity() {
+//          if ((!wave.getState().get.('entry_id'))) {
+//            wave.getState().submitDelta({'entry_id': "knrwbq7z4o"});
+//          };
+          debugMessage("Entry sanity ran");
+        };
+        
+        entrySanity();
+//        wavePlay((wave.getState().get.('entry_id)));
+
+        // This will display a messge in the debug tab
+        //debugMessage("I'm pinging the debug_message div for you.");
+
         wavePlay("knrwbq7z4o");
         </script>
     ]]>
