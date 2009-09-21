@@ -28,6 +28,7 @@
       </div>
       
       <script type="text/javascript" src="js/jquery-1.2.6.min.js"></script>
+      <script type="text/javascript" src="http://wave-api.appspot.com/public/wave.js"></script>
 
       <script type="text/javascript">
         // Set Player as default tab
@@ -50,8 +51,8 @@
                               });
           // Make wave state aware
             if (wave && wave.isInWaveContainer()) {
-              wave.setStateCallback(stateUpdated);
-            }
+//              wave.setStateCallback(stateUpdated);
+            };
         };
 
         // Get state for the debug console
@@ -62,7 +63,7 @@
             debug_state.innerHTML = "The state is empty.";
           }
           else {
-            debug_state.innerHTML = "The state is " + wave.getState();
+            debug_state.innerHTML = "The state is " + wave.State.toString();
           } 
         };
         function debugState() {
@@ -102,20 +103,28 @@
         };
         
         // Make sure there is an entry_id in wave state
-        function entrySanity() {
-//          if ((!wave.getState().get.('entry_id'))) {
-//            wave.getState().submitDelta({'entry_id': "knrwbq7z4o"});
+//        function entrySanity() {
+//          if ((wave.State.get('entry_id'))) {
+//              debugMessage((wave.State.get()));
+//            wave.State.submitDelta({'entryid': 'knrwbq7z4o'});
 //          };
-          debugMessage("Entry sanity ran");
-        };
+//        };
         
-        entrySanity();
+//        entrySanity();
 //        wavePlay((wave.getState().get.('entry_id)));
 
         // This will display a messge in the debug tab
-        //debugMessage("I'm pinging the debug_message div for you.");
+        var testvalue = "testing, testing, 1, 2, 3";
+        
+        function testState() {
+          wave.getState().submitDelta({'testkey': 'testvalue'});
+        };
 
-        wavePlay("knrwbq7z4o");
+        testState();
+
+        debugMessage(testvalue);
+        
+//        wavePlay("knrwbq7z4o");
         </script>
     ]]>
   </Content>
