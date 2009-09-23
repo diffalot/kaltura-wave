@@ -1,9 +1,0 @@
-<extension 
-name="Are You In?"
-description="Also known as the Yes/No/Maybe gadget. Used for gauging interest"
-thumbnailUrl="http://wave-skynet.appspot.com/public/extensions/areyouin/preview.png"> 
-  <author name="David Byttow" email="davidbyttow@google.com"/> 
-  <menuHook location="TOOLBAR" text="Insert an Are You In gadget." iconUrl="http://wave-skynet.appspot.com/public/extensions/areyouin/icon.png"> 
-    <insertGadget url="http://wave-api.appspot.com/public/gadgets/areyouin/gadget.xml"/> 
-  </menuHook> 
-</extension> 
