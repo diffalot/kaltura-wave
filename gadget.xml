@@ -23,7 +23,6 @@
       </div>
       <div id="debug"style="display:none">
         <div id="debug_message"></div>
-        <input type=button value="load state" id="load_state" onClick="debugState()">
         <div id="debug_state"></div>
       </div>
       
@@ -35,7 +34,8 @@
         var tabs = new gadgets.TabSet(__MODULE_ID__, "Play");
         
         // Init!
-        function init() {
+        function initialize() {
+          
           // Define Tabs
           tabs.addTab("Play", {
                               contentContainer: document.getElementById("player")
@@ -49,35 +49,38 @@
           tabs.addTab("Debug", {
                               contentContainer: document.getElementById("debug")
                               });
+          
           // Make wave state aware
             if (wave && wave.isInWaveContainer()) {
-//              wave.setStateCallback(stateUpdated);
+              wave.setStateCallback(receiveState, this);
+              wave.setModeCallback(receiveMode, this);
             };
         };
 
         // Get state for the debug console
-        var debug_state = document.getElementById('debug_state');
-        var debug_message = document.getElementById('debug_message');
-        function stateUpdated() {
-          if(!wave.getState()) {
-            debug_state.innerHTML = "The state is empty.";
-          }
-          else {
-            debug_state.innerHTML = "The state is " + wave.State.toString();
-          } 
-        };
-        function debugState() {
-          stateUpdated();
-        };
-        function changeState(key, value) {
-        //  wave.getState().submitDelta({(key): (value)});
-        };
-        function debugMessage(message) {
-          debug_message.innerHTML = "Registered Message: " + message;
-        };
+//        var debug_state = document.getElementById('debug_state');
+//        var debug_message = document.getElementById('debug_message');
+//        function stateUpdated() {
+//          if(!wave.getState()) {
+//            debug_state.innerHTML = "The state is empty.";
+//          }
+//          else {
+//            debug_state.innerHTML = "The state is " + wave.State.toString();
+//          } 
+//        };
+//        function debugState() {
+//          stateUpdated();
+//        };
 
-        // Call init function to initialize and display tabs.
-        gadgets.util.registerOnLoadHandler(init);
+
+//        function changeState(key, value) {
+//          wave.getState().submitDelta({(key): (value)});
+//        };
+//        function debugMessage(message) {
+//          debug_message.innerHTML = "Registered Message: " + message;
+//        };
+
+
         
         // Function to populate kplayer with current video
         function wavePlay(entry_id) {
@@ -114,17 +117,22 @@
 //        wavePlay((wave.getState().get.('entry_id)));
 
         // This will display a messge in the debug tab
-        var testvalue = "testing, testing, 1, 2, 3";
+//        var testvalue = "testing, testing, 1, 2, 3";
         
-        function testState() {
-          wave.getState().submitDelta({'testkey': 'testvalue'});
-        };
+//        function testState() {
+//          wave.getState().submitDelta({'testkey': 'testvalue'});
+//        };
 
-        testState();
+//        testState();
 
-        debugMessage(testvalue);
+//        debugMessage(testvalue);
         
-//        wavePlay("knrwbq7z4o");
+
+        // Call init function to initialize and display tabs.
+        gadgets.util.registerOnLoadHandler(initialize);
+        
+        wavePlay("knrwbq7z4o");
+//        gadgets.window.adjustHeight();
         </script>
     ]]>
   </Content>
