@@ -5,83 +5,86 @@
                author="papyromancer"
                author_email="papyromancer@lightcorp.net">
     <Require feature="wave" />
+    <Require feature="locked-domain" />
     <Require feature="dynamic-height" />
-    <Require feature="tabs" />
     <Require feature="flash" />
   </ModulePrefs>
   <Content type="html">
     <![CDATA[
-      <div id="player" style="display:none">
+      <div id="player">
         <div id="kplayer" style="text-align:center"></div>
-      </div>
-      <div id="editor"style="display:none">Editor Goes Here</div>
-      <div id="media_adder" style="display:none">
-        <h1>Media Management</h1>
-        <p>Media Management, by virtue of its user centric and user specific nature of allowing users to add files from their own computer terminals, is a private action.  While the wave state is shared within the editing and playback tabs, adding media is a purely personal task, and exposing the add media widget to group editing is likely to cause innumerable probs.</p>
-        <p>Neither the switch to the 'Add Media' tab nor the state of the 'Add Media' widget shall ever be recorded within the wave state.</p>
-        <p>Media management is not available to wave state.</p>
-      </div>
-      <div id="debug"style="display:none">
-        <div id="debug_message"></div>
-        <div id="debug_state"></div>
+        <div id="ksettings" style="display:none"></div>
       </div>
       
       <script type="text/javascript" src="js/jquery-1.2.6.min.js"></script>
       <script type="text/javascript" src="http://wave-api.appspot.com/public/wave.js"></script>
 
       <script type="text/javascript">
-        // Set Player as default tab
-        var tabs = new gadgets.TabSet(__MODULE_ID__, "Play");
-        
         // Init!
         function initialize() {
-          
-          // Define Tabs
-          tabs.addTab("Play", {
-                              contentContainer: document.getElementById("player")
-                              });
-          tabs.addTab("Edit", {
-                              contentContainer: document.getElementById("editor")
-                              });
-          tabs.addTab("Add Media", {
-                              contentContainer: document.getElementById("media_adder")
-                              });
-          tabs.addTab("Debug", {
-                              contentContainer: document.getElementById("debug")
-                              });
-          
           // Make wave state aware
             if (wave && wave.isInWaveContainer()) {
               wave.setStateCallback(receiveState, this);
+              wave.setParticipantCallback(receiveWaveParticipants, this);
               wave.setModeCallback(receiveMode, this);
             };
         };
 
-        // Get state for the debug console
-//        var debug_state = document.getElementById('debug_state');
-//        var debug_message = document.getElementById('debug_message');
-//        function stateUpdated() {
-//          if(!wave.getState()) {
-//            debug_state.innerHTML = "The state is empty.";
-//          }
-//          else {
-//            debug_state.innerHTML = "The state is " + wave.State.toString();
-//          } 
-//        };
-//        function debugState() {
-//          stateUpdated();
-//        };
+        function receiveState(state) {
+          wave.log("Got state: " + gadgets.json.stringify(state));
+          document.getElementById('debug_state').innerHTML = "Counter: " + String(state.get('counter'));
+          document.getElementById('debug_message').innerHTML = "Last click: " + String(state.get('clickedby'));
+          gadgets.window.adjustHeight();
+        };
 
+        function receiveWaveParticipants(participants) {
+          var str = '';
+          var name = "unknown";
+          if (wave.getViewer()) {
+            name = wave.getViewer().getDisplayName();
+          };
+          str += 'I am ' + name + '<br/>';
+          str += 'Participants:' + '<br/>';
+          for (var i in participants) {
+            str += '&nbsp;&nbsp;&nbsp;' + participants[i].getDisplayName() + '<br/>';
+          };
+          document.getElementById('participant_list').innerHTML = str;
+          gadgets.window.adjustHeight();
+        };
 
-//        function changeState(key, value) {
-//          wave.getState().submitDelta({(key): (value)});
-//        };
-//        function debugMessage(message) {
-//          debug_message.innerHTML = "Registered Message: " + message;
-//        };
+        function receiveMode(mode) {
+          var modeStr = "UNKNOWN";
+          switch (mode) {
+            case wave.Mode.PLAYBACK: modeStr = "PLAYBACK"; break;
+            case wave.Mode.EDIT: modeStr = "EDIT"; break;
+            case wave.Mode.VIEW: modeStr = "VIEW"; break;
+          }
+          var disableButtons = !(mode == wave.Mode.EDIT);
+          document.getElementById('increment_button').disabled = disableButtons;
+          document.getElementById('delete_button').disabled = disableButtons;
+          document.getElementById('mode_value').innerHTML = "Mode: " + String(modeStr);
+        };
 
+        function updateState() {
+          var state = wave.getState();
+          var participants = wave.getParticipants();
+          var entry_id = state.get('entry_id');
+          if !entry_id {
+            //video has not been chosen!
+          }
+          if ((typeof entry_id == 'string') && (entry_id) {
+            wavePlay(entry_id);
+          } else {
+            //video has not been chosen
+          }
+          var clickedby = wave.getViewer().getDisplayName();
+          if (typeof clickedby != 'string') {
+            clickedby = '?';
+          }
+          clickedby += ' ' + new Date();
+          state.submitDelta({'entry_id' : entry_id, 'clickedby' : clickedby});
+        }
 
-        
         // Function to populate kplayer with current video
         function wavePlay(entry_id) {
         
@@ -105,34 +108,8 @@
           gadgets.flash.embedFlash("http://www.kaltura.com/kwidget/wid/_39061/ui_conf_id/1008311?"+kflashvars, "kplayer", "9.0.0", kparams );
         };
         
-        // Make sure there is an entry_id in wave state
-//        function entrySanity() {
-//          if ((wave.State.get('entry_id'))) {
-//              debugMessage((wave.State.get()));
-//            wave.State.submitDelta({'entryid': 'knrwbq7z4o'});
-//          };
-//        };
-        
-//        entrySanity();
-//        wavePlay((wave.getState().get.('entry_id)));
-
-        // This will display a messge in the debug tab
-//        var testvalue = "testing, testing, 1, 2, 3";
-        
-//        function testState() {
-//          wave.getState().submitDelta({'testkey': 'testvalue'});
-//        };
-
-//        testState();
-
-//        debugMessage(testvalue);
-        
-
-        // Call init function to initialize and display tabs.
+        // Call init function
         gadgets.util.registerOnLoadHandler(initialize);
-        
-        wavePlay("knrwbq7z4o");
-//        gadgets.window.adjustHeight();
         </script>
     ]]>
   </Content>
