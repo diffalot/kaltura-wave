@@ -11,9 +11,10 @@
   </ModulePrefs>
   <Content type="html">
     <![CDATA[
-      <div id="player">
+      <div id="kaltura-wave">
+        <div id="kcontribute" style="text-align:center""></div>
         <div id="kplayer" style="text-align:center"></div>
-        <div id="ksettings" style="display:none"></div>
+        <div id="kedit" style="text-align:center""></div>
       </div>
       
       <script type="text/javascript" src="js/jquery-1.2.6.min.js"></script>
@@ -24,16 +25,14 @@
         function initialize() {
           // Make wave state aware
             if (wave && wave.isInWaveContainer()) {
-              wave.setStateCallback(receiveState, this);
-              wave.setParticipantCallback(receiveWaveParticipants, this);
-              wave.setModeCallback(receiveMode, this);
+/              wave.setStateCallback(receiveState, this);
+/              wave.setParticipantCallback(receiveWaveParticipants, this);
+/              wave.setModeCallback(receiveMode, this);
             };
         };
 
         function receiveState(state) {
           wave.log("Got state: " + gadgets.json.stringify(state));
-          document.getElementById('debug_state').innerHTML = "Counter: " + String(state.get('counter'));
-          document.getElementById('debug_message').innerHTML = "Last click: " + String(state.get('clickedby'));
           gadgets.window.adjustHeight();
         };
 
@@ -48,7 +47,6 @@
           for (var i in participants) {
             str += '&nbsp;&nbsp;&nbsp;' + participants[i].getDisplayName() + '<br/>';
           };
-          document.getElementById('participant_list').innerHTML = str;
           gadgets.window.adjustHeight();
         };
 
@@ -60,9 +58,6 @@
             case wave.Mode.VIEW: modeStr = "VIEW"; break;
           }
           var disableButtons = !(mode == wave.Mode.EDIT);
-          document.getElementById('increment_button').disabled = disableButtons;
-          document.getElementById('delete_button').disabled = disableButtons;
-          document.getElementById('mode_value').innerHTML = "Mode: " + String(modeStr);
         };
 
         function updateState() {
@@ -77,13 +72,31 @@
           } else {
             //video has not been chosen
           }
-          var clickedby = wave.getViewer().getDisplayName();
-          if (typeof clickedby != 'string') {
-            clickedby = '?';
-          }
-          clickedby += ' ' + new Date();
-          state.submitDelta({'entry_id' : entry_id, 'clickedby' : clickedby});
+          state.submitDelta({'entry_id' : entry_id });
         }
+
+        // Function to select a video to insert into the player
+        function waveContribute() {
+          
+          // Set Variables for kcontribute
+          var kvars = {
+                      //entry_id: entry_id "knrwbq7z4o"
+                      };
+          
+          // kflashvars should be constructed from the kvars object
+          var kflashvars = "entry_id="+entry_id // knrwbq7z4o"
+          
+          var kparams = {
+                        allowscriptaccess: "always",
+                        allownetworking: "all",
+                        allowfullscreen: "true",
+                        wmode: "opaque",
+                        width: "400",
+                        height: "290"
+                        };
+
+          gadgets.flash.embedFlash("http://www.kaltura.com/kcw/ui_conf_id/1000741 "+kflashvars, "kplayer", "9.0.0", kparams );
+        };
 
         // Function to populate kplayer with current video
         function wavePlay(entry_id) {
@@ -110,6 +123,9 @@
         
         // Call init function
         gadgets.util.registerOnLoadHandler(initialize);
+
+wavePlay("knrwbq7z4o")
+
         </script>
     ]]>
   </Content>
