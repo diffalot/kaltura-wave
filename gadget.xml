@@ -11,12 +11,7 @@
   </ModulePrefs>
   <Content type="html">
     <![CDATA[
-      <div id="kaltura-wave">
-        <div id="kcontribute" style="text-align:center""></div>
-        <div id="kplayer" style="text-align:center"></div>
-        <div id="kedit" style="text-align:center""></div>
-      </div>
-      
+
       <script type="text/javascript" src="js/jquery-1.2.6.min.js"></script>
       <script type="text/javascript" src="http://wave-api.appspot.com/public/wave.js"></script>
 
@@ -25,54 +20,22 @@
         function initialize() {
           // Make wave state aware
             if (wave && wave.isInWaveContainer()) {
-/              wave.setStateCallback(receiveState, this);
-/              wave.setParticipantCallback(receiveWaveParticipants, this);
-/              wave.setModeCallback(receiveMode, this);
-            };
-        };
+              wave.setStateCallback(receiveState, this);
+            //  wave.setParticipantCallback(receiveWaveParticipants, this);
+            //  wave.setModeCallback(receiveMode, this);
+            }
+        }
 
         function receiveState(state) {
-          wave.log("Got state: " + gadgets.json.stringify(state));
-          gadgets.window.adjustHeight();
-        };
+          document.getElementById("debugDiv").innerHTML += "State: " + state + "<br />";
+        }
 
-        function receiveWaveParticipants(participants) {
-          var str = '';
-          var name = "unknown";
-          if (wave.getViewer()) {
-            name = wave.getViewer().getDisplayName();
-          };
-          str += 'I am ' + name + '<br/>';
-          str += 'Participants:' + '<br/>';
-          for (var i in participants) {
-            str += '&nbsp;&nbsp;&nbsp;' + participants[i].getDisplayName() + '<br/>';
-          };
-          gadgets.window.adjustHeight();
-        };
-
-        function receiveMode(mode) {
-          var modeStr = "UNKNOWN";
-          switch (mode) {
-            case wave.Mode.PLAYBACK: modeStr = "PLAYBACK"; break;
-            case wave.Mode.EDIT: modeStr = "EDIT"; break;
-            case wave.Mode.VIEW: modeStr = "VIEW"; break;
-          }
-          var disableButtons = !(mode == wave.Mode.EDIT);
-        };
-
-        function updateState() {
+        // Set Kaltura Login Credentials
+        function chooseKalturaPartner() {
           var state = wave.getState();
-          var participants = wave.getParticipants();
-          var entry_id = state.get('entry_id');
-          if !entry_id {
-            //video has not been chosen!
-          }
-          if ((typeof entry_id == 'string') && (entry_id) {
-            wavePlay(entry_id);
-          } else {
-            //video has not been chosen
-          }
-          state.submitDelta({'entry_id' : entry_id });
+          var kalturaPartnerId = parseInt(document.getElementById('kalturaPartnerId').value);
+          var kalturaSubPartnerId = parseInt(document.getElementById('kalturaSubPartnerId').value);
+          state.submitDelta({'kalturaPartnerId' : kalturaPartnerId, 'kalturaSubPartnerId' : kalturaSubPartnerId});
         }
 
         // Function to select a video to insert into the player
@@ -124,9 +87,43 @@
         // Call init function
         gadgets.util.registerOnLoadHandler(initialize);
 
-wavePlay("knrwbq7z4o")
+//wavePlay("knrwbq7z4o")
 
-        </script>
+      </script>
+      
+      <div id="kaltura-wave">
+        <div id="ksetup" style="text-align:center">
+          <table align="center">
+            <tr>
+              <td>
+                <p>Kaltura Partner ID</p>
+              </td>
+              <td>
+                <input id="kalturaPartnerId" size="15" value="0">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>Kaltura Subpartner ID</p>
+              </td>
+              <td>
+                <input id="kalturaSubPartnerId" size="15" value="0">
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" align="right">
+                <button id="login_button" type="button" onclick="chooseKalturaPartner()">
+                  Login
+                </button>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div id="kcontribute" style="text-align:center"></div>
+        <div id="kplayer" style="text-align:center"></div>
+        <div id="kedit" style="text-align:center"></div>
+      </div>
+      <div id="debugDiv" style="width:100%; height:200px; overflow:scroll"></div>
     ]]>
   </Content>
 </Module>
