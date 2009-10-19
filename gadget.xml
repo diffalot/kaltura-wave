@@ -46,15 +46,15 @@
         // Set Kaltura Login Credentials
         function chooseKalturaPartner() {
           var state = wave.getState();
-          var name = "unknown";
-          if (wave.getViewer()) {
-            name = wave.getViewer().getDisplayName();
-          }
+//          var name = "unknown";
+//          if (wave.getViewer()) {
+//            name = wave.getViewer().getDisplayName();
+//          }
           var kalturaPartnerId = parseInt(document.getElementById('kalturaPartnerId').value);
           var kalturaPartnerSecret = (document.getElementById('kalturaPartnerSecret').value);
-          
-          :var result = jQuery.post("http://www.kaltura.com/api_v3/?service=session&action=start", { secret: kalturaPartnerSecret, partnerId: kalturaPartnerId, userId : name, type : 0 }, function(data){}, "xml");
-          document.getElementById("debugDiv").innerHTML += "<br />" + "Result: " + result + "<br />";
+          state.submitDelta({ 'kalturaPartnerId' : kalturaPartnerId, 'kalturaPartnerSecret' : kalturaPartnerSecret });
+//          :var result = jQuery.post("http://www.kaltura.com/api_v3/?service=session&action=start", { secret: kalturaPartnerSecret, partnerId: kalturaPartnerId, userId : name, type : 0 }, function(data){}, "xml");
+//          document.getElementById("debugDiv").innerHTML += "<br />" + "Result: " + result + "<br />";
         }
 
         // Contribution Wizard Embed
@@ -83,7 +83,7 @@
           var session = "ODEyMjM1MGY5YWMyOWMzZDFkYzJhNzg4MzJiZjhkYjBiMGY2OGQ3MHwzOTA2MTszOTA2MTsxMjU2MDM1OTY1OzA7MTI1NTk0OTU2NS4wNjg1Ozs=";
           
           
-          var kFlashVars = "uid=" + name + "&partnerId=" + fullState.get('kalturaPartnerId') + "&ks=" + session + "&afterAddEntry=onContributionWizardAfterAddEntry&close=onContributionWizardClose&showCloseButton=false&Permissions=1";
+          var kFlashVars = "uid=" + name + "&partnerId=" + fullState.get('kalturaPartnerId') + "&ks=" + session + "&afterAddEntry=onContributionWizardAfterAddEntry&close=onContributionWizardClose&showCloseButton=true&Permissions=1";
           var kParams = {
                         allowscriptaccess:'always',
                         allownetworking:'all',
@@ -111,6 +111,7 @@
 
         function onContributionWizardClose() {
         document.getElementById('kcontribute').style.display = "none";
+        document.getElementById('kplayer').style.display = "block";
         }
 
         // Function to populate kplayer with current video
