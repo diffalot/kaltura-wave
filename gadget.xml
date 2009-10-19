@@ -5,7 +5,6 @@
                author="papyromancer"
                author_email="papyromancer@lightcorp.net">
     <Require feature="wave" />
-    <Require feature="locked-domain" />
     <Require feature="dynamic-height" />
     <Require feature="flash" />
   </ModulePrefs>
@@ -21,58 +20,106 @@
           // Make wave state aware
             if (wave && wave.isInWaveContainer()) {
               wave.setStateCallback(receiveState, this);
-            //  wave.setParticipantCallback(receiveWaveParticipants, this);
-            //  wave.setModeCallback(receiveMode, this);
             }
         }
 
         function receiveState(state) {
-          document.getElementById("debugDiv").innerHTML += "State: " + state + "<br />";
+          document.getElementById("debugDiv").innerHTML += "<br />" + "State Changed: " + state + "<br />";
+          
+          fullState = wave.getState();
+          
+          document.getElementById("debugDiv").innerHTML += "Full State: " + fullState + "<br />";
+          
+          // wavePlay if entryId exists
+          if (fullState.get('kEntryId')) {
+            wavePlay( fullState.get('kEntryId') );
+          }
+          else {
+            // Display Contribution wizard if no video is stored in the state
+            waveContribute();
+          }
+
+          // Finally Adjust Height
+          gadgets.window.adjustHeight();
         }
 
         // Set Kaltura Login Credentials
         function chooseKalturaPartner() {
           var state = wave.getState();
+          var name = "unknown";
+          if (wave.getViewer()) {
+            name = wave.getViewer().getDisplayName();
+          }
           var kalturaPartnerId = parseInt(document.getElementById('kalturaPartnerId').value);
-          var kalturaSubPartnerId = parseInt(document.getElementById('kalturaSubPartnerId').value);
-          state.submitDelta({'kalturaPartnerId' : kalturaPartnerId, 'kalturaSubPartnerId' : kalturaSubPartnerId});
+          var kalturaPartnerSecret = (document.getElementById('kalturaPartnerSecret').value);
+          
+          :var result = jQuery.post("http://www.kaltura.com/api_v3/?service=session&action=start", { secret: kalturaPartnerSecret, partnerId: kalturaPartnerId, userId : name, type : 0 }, function(data){}, "xml");
+          document.getElementById("debugDiv").innerHTML += "<br />" + "Result: " + result + "<br />";
         }
 
-        // Function to select a video to insert into the player
+        // Contribution Wizard Embed
         function waveContribute() {
           
-          // Set Variables for kcontribute
-          var kvars = {
-                      //entry_id: entry_id "knrwbq7z4o"
-                      };
+          fullState = wave.getState();
+
+          // Display setup if session is empty
+          if (!fullState.get('kalturaPartnerId')) {
+            document.getElementById('ksetup').style.display = "block";
+          }
+          else {
+            document.getElementById('ksetup').style.display = "none";
+          }
+
+          // Create a Kaltura Session
+          var name = "unknown";
+          if (wave.getViewer()) {
+            name = wave.getViewer().getDisplayName();
+          }
+          fullState = wave.getState();
+          //config = kalturaSessionConfig(fullState.get('kalturaPartnerId'));
+          //client = kalturaClient(config);
+          //session = kalturaSession.start(fullState.get('kalturaPartnerSecret'), name);
+
+          var session = "ODEyMjM1MGY5YWMyOWMzZDFkYzJhNzg4MzJiZjhkYjBiMGY2OGQ3MHwzOTA2MTszOTA2MTsxMjU2MDM1OTY1OzA7MTI1NTk0OTU2NS4wNjg1Ozs=";
           
-          // kflashvars should be constructed from the kvars object
-          var kflashvars = "entry_id="+entry_id // knrwbq7z4o"
           
-          var kparams = {
-                        allowscriptaccess: "always",
-                        allownetworking: "all",
-                        allowfullscreen: "true",
-                        wmode: "opaque",
-                        width: "400",
-                        height: "290"
+          var kFlashVars = "uid=" + name + "&partnerId=" + fullState.get('kalturaPartnerId') + "&ks=" + session + "&afterAddEntry=onContributionWizardAfterAddEntry&close=onContributionWizardClose&showCloseButton=false&Permissions=1";
+          var kParams = {
+                        allowscriptaccess:'always',
+                        allownetworking:'all',
+                        wmode:'opaque',
+                        width:'680',
+                        height:'360',
+                        flashvars: kFlashVars 
                         };
 
-          gadgets.flash.embedFlash("http://www.kaltura.com/kcw/ui_conf_id/1000741 "+kflashvars, "kplayer", "9.0.0", kparams );
+          // Embed Contrib Wizard if the session exists
+          if (fullState.get('kalturaPartnerId')) {
+            document.getElementById('kplayer').style.display = "none";
+            document.getElementById('kcontribute').style.display = "block";
+            gadgets.flash.embedFlash("http://www.kaltura.com/kcw/ui_conf_id/1000741", "kcontribute", "9.0.0", kParams );
+          }
         };
+
+        function onContributionWizardAfterAddEntry(entries) {
+          for(var i = 0; i < entries.length; i++) {
+            var kEntryId = entries[i].entryId;
+          }
+          var state = wave.getState();
+          state.submitDelta({'kEntryId' : kEntryId});
+        }
+
+        function onContributionWizardClose() {
+        document.getElementById('kcontribute').style.display = "none";
+        }
 
         // Function to populate kplayer with current video
-        function wavePlay(entry_id) {
-        
-          // Set Variables for kplayer
-          var kvars = {
-                      entry_id: entry_id //"knrwbq7z4o"
-                      };
+        function wavePlay(kEntryId) {
           
-          // kflashvars should be constructed from the kvars object
-          var kflashvars = "entry_id="+entry_id // knrwbq7z4o"
+          // kflashvars should be constructed from an object, eventually
+          var kFlashVars = "?entry_id=" + kEntryId // knrwbq7z4o is a nice test entry
           
-          var kparams = {
+          var kParams = {
                         allowscriptaccess: "always",
                         allownetworking: "all",
                         allowfullscreen: "true",
@@ -80,38 +127,61 @@
                         width: "400",
                         height: "290"
                         };
+          
           // embed kplayer
-          gadgets.flash.embedFlash("http://www.kaltura.com/kwidget/wid/_39061/ui_conf_id/1008311?"+kflashvars, "kplayer", "9.0.0", kparams );
+          document.getElementById('kplayer').style.display = "block";
+          gadgets.flash.embedFlash("http://www.kaltura.com/kwidget/wid/_39061/ui_conf_id/1008311"+kFlashVars, "kplayer", "9.0.0", kParams );
         };
-        
+       
+
+        // Display Properties
+        function displaySetup() {
+          document.getElementById('ksetup').style.display = "block";
+          gadgets.window.adjustHeight();
+        }
+        function hideSetup() {
+          document.getElementById('ksetup').style.display = "none";
+          gadgets.window.adjustHeight();
+        }
+
+        // Debug
+        function displayDebug() {
+          document.getElementById('debugDiv').style.display = "block";
+          gadgets.window.adjustHeight();
+        }
+        function hideDebug() {
+          document.getElementById('debugDiv').style.display = "none";
+          gadgets.window.adjustHeight();
+        }
+
         // Call init function
         gadgets.util.registerOnLoadHandler(initialize);
-
-//wavePlay("knrwbq7z4o")
-
       </script>
       
       <div id="kaltura-wave">
-        <div id="ksetup" style="text-align:center">
+        <div id="ksetup" style="display:none;text-align:center">
           <table align="center">
             <tr>
               <td>
                 <p>Kaltura Partner ID</p>
               </td>
               <td>
-                <input id="kalturaPartnerId" size="15" value="0">
+                <input id="kalturaPartnerId" size="35" value="39061">
               </td>
             </tr>
             <tr>
               <td>
-                <p>Kaltura Subpartner ID</p>
+                <p>Kaltura Partner Secret</p>
               </td>
               <td>
-                <input id="kalturaSubPartnerId" size="15" value="0">
+                <input id="kalturaPartnerSecret" size="35" value="Not Implemented Yet">
               </td>
             </tr>
             <tr>
-              <td colspan="2" align="right">
+              <td>
+                <p><a href="#" onclick="hideSetup()">hide</a></p>
+              </td>
+              <td align="right">
                 <button id="login_button" type="button" onclick="chooseKalturaPartner()">
                   Login
                 </button>
@@ -119,11 +189,18 @@
             </tr>
           </table>
         </div>
-        <div id="kcontribute" style="text-align:center"></div>
-        <div id="kplayer" style="text-align:center"></div>
-        <div id="kedit" style="text-align:center"></div>
+        <div id="kcontribute" style="display:none;height:400px;text-align:center"></div>
+        <div id="kplayer" style="display:none;height:310px;text-align:center"></div>
+        <div id="kedit" style="display:none;text-align:center"></div>
+        <p>
+          <a href="#" onclick="displaySetup()">Setup</a> 
+          <a href="#" onclick="waveContribute()">Contribute</a> 
+          <a href="#" onclick="displayDebug()">Debug</a>
+        </p>
       </div>
-      <div id="debugDiv" style="width:100%; height:200px; overflow:scroll"></div>
+      <div id="debugDiv" style="display:none; width:100%; height:200px; overflow:scroll">
+        <p><a href="#" onclick="hideDebug()">hide</a></p>
+      </div>
     ]]>
   </Content>
 </Module>
