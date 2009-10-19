@@ -1,0 +1,9 @@
+<extension 
+name="Kaltura Wave - GitHub Papyromancer"
+description="Embed Kaltura Videos (GitHub - Papyromancer)"
+thumbnailUrl="http://merlin.lightcorp.net/kaltura-wave/images/kaltura_sun_icon.png">
+  <author name="Papyromancer" email="papyromancer@lightcorp.net"/>
+  <menuHook location="TOOLBAR" text="(Git-Papy) Insert Collaborative Media with Kaltura." iconUrl="http://merlin.lightcorp.net/kaltura-wave/images/interactive_video_button.gif">
+    <insertGadget url="http://github.com/papyromancer/kaltura-wave/raw/master/gadget.xml"/>
+  </menuHook>
+</extension>
