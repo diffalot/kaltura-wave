@@ -11,9 +11,102 @@
   <Content type="html">
     <![CDATA[
 
-      <script type="text/javascript" src="js/jquery-1.2.6.min.js"></script>
-      <script type="text/javascript" src="http://wave-api.appspot.com/public/wave.js"></script>
+      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+      
+      <script type="text/javascript" src="http://merlin.lightcorp.net/kaltura-wave/js/flxhr/jquery.xhr.js"></script>
+		  <script type="text/javascript" src="http://merlin.lightcorp.net/kaltura-wave/js/flxhr/flXHR.js"></script>
+		  <script type="text/javascript" src="http://merlin.lightcorp.net/kaltura-wave/js/flxhr/jquery.flXHRproxy.js"></script>
+		  
+      <script type="text/javascript">
+          var ksession = "nothing yet";
+			  /**
+			  * Prepare the JQuery for cross-domain ajax requests via flXHRproxy and register 
+        * the ajax start and end events to the loading gif.
+			  */
+			  jQuery(document).ready(function() {
+				  jQuery.flXHRproxy.registerOptions('http://www.kaltura.com/',{xmlResponseText:true});
+				  jQuery.ajaxSetup({transport:'flXHRproxy'});
+				  $("#loading").hide();
+				  $("#loading").ajaxStart(function(){
+				    $(this).show();
+				  });
+				  $("#loading").ajaxStop(function(){
+				    $(this).hide();
+				  }); 
+			  });
+			  
+			  /**
+			  * Global handler for successful requests. 
+			  */
+			  function successHandler(data,status,XHRobj) {
+				  if (XHRobj.readyState == 4) {
+					  str = "readyState:"+XHRobj.readyState
+							  +"\nresponseText:"+XHRobj.responseText
+							  +"\nstatus:"+XHRobj.status
+							  +"\nstatusText:"+XHRobj.statusText
+							  +"\nSource Object Id: "+XHRobj.instanceId;
+					  kcllog ("Success", str);
+					  kcllog ("KS Generated", $(XHRobj.responseText).find('result').text());
+            ksession = $(XHRobj.responseText).find('result').text();
+            document.getElementById("debugDiv").innerHTML += "<br />" + "in handler: " + ksession + "<br />";
+				  }
+			  }
+			  
+			  /**
+			  * Global handler for errorness requests. 
+			  */
+			  function errorHandler(XHRobj,errtype,errObj) {
+				  str = "Error: "+errObj.number
+					  +"\nType: "+errObj.name
+					  +"\nDescription: "+errObj.description
+					  +"\nSource Object Id: "+errObj.srcElement.instanceId;
+				  kcllog ("Error", str);
+			  }
+			  
+			  /**
+			  * An easy logging method.
+			  */
+			  function kcllog (message, log_data) {
+				  if (console.log) {
+					  console.log (message+":\n"+log_data);
+				  }
+			  } 
+			  
+			  /**
+			  * Client base function to hit the kaltura server with sepcifc service, action and data.
+			  * Results and errors are catched by the successHandler and errorHandler methods.
+			  * @param kaltura_service	The kaltura service to query (e.g. session, user, partner, media, etc).
+			  * @param kaltura_action		The action on the service to call, for example start on the session service.
+			  * @param call_data			The key-value object to pass as the request post data.
+			  */
+			  function kclhit(kaltura_service, kaltura_action, call_data) {
+				  requestObj = $.ajax({ 
+					  type:"POST", 
+					  aysnch:true,
+					  dataType:"xml",
+					  url:"http://www.kaltura.com/api_v3/index.php?service="+kaltura_service+"&action="+kaltura_action, 
+					  data:call_data,
+					  success:successHandler,
+					  error:errorHandler
+				  });
+				  kcllog ("Request", "id: "+requestObj.instanceId+"\nBinary result: "+requestObj.binaryResponseBody+"\nXML result: "+requestObj.xmlResponseText);
+			  }
 
+			  function getKalturaSession (kalturaPartnerId, kalturaPartnerSecret){
+				  getKSData = {
+								  partnerId: kalturaPartnerId,
+								  secret: kalturaPartnerSecret,
+								  userId: name,
+								  expiry: 36000,
+								  privileges: "edit:*",
+								  type: 0
+							  };
+				  kclhit ("session", "start", getKSData);
+			  }
+			
+		  </script>
+		  
+      <script type="text/javascript" src="http://wave-api.appspot.com/public/wave.js"></script>
       <script type="text/javascript">
         // Init!
         function initialize() {
@@ -46,15 +139,16 @@
         // Set Kaltura Login Credentials
         function chooseKalturaPartner() {
           var state = wave.getState();
-//          var name = "unknown";
-//          if (wave.getViewer()) {
-//            name = wave.getViewer().getDisplayName();
-//          }
+          var name = "unknown";
+          if (wave.getViewer()) {
+            name = wave.getViewer().getDisplayName();
+          }
           var kalturaPartnerId = parseInt(document.getElementById('kalturaPartnerId').value);
           var kalturaPartnerSecret = (document.getElementById('kalturaPartnerSecret').value);
-          state.submitDelta({ 'kalturaPartnerId' : kalturaPartnerId, 'kalturaPartnerSecret' : kalturaPartnerSecret });
-//          :var result = jQuery.post("http://www.kaltura.com/api_v3/?service=session&action=start", { secret: kalturaPartnerSecret, partnerId: kalturaPartnerId, userId : name, type : 0 }, function(data){}, "xml");
-//          document.getElementById("debugDiv").innerHTML += "<br />" + "Result: " + result + "<br />";
+
+          var session = getKalturaSession(kalturaPartnerId, kalturaPartnerSecret);
+
+          state.submitDelta({ 'kalturaPartnerId' : kalturaPartnerId });
         }
 
         // Contribution Wizard Embed
@@ -63,27 +157,14 @@
           fullState = wave.getState();
 
           // Display setup if session is empty
-          if (!fullState.get('kalturaPartnerId')) {
+          if (ksession == "Nothing Yet") {
             document.getElementById('ksetup').style.display = "block";
           }
           else {
             document.getElementById('ksetup').style.display = "none";
           }
 
-          // Create a Kaltura Session
-          var name = "unknown";
-          if (wave.getViewer()) {
-            name = wave.getViewer().getDisplayName();
-          }
-          fullState = wave.getState();
-          //config = kalturaSessionConfig(fullState.get('kalturaPartnerId'));
-          //client = kalturaClient(config);
-          //session = kalturaSession.start(fullState.get('kalturaPartnerSecret'), name);
-
-          var session = "ODEyMjM1MGY5YWMyOWMzZDFkYzJhNzg4MzJiZjhkYjBiMGY2OGQ3MHwzOTA2MTszOTA2MTsxMjU2MDM1OTY1OzA7MTI1NTk0OTU2NS4wNjg1Ozs=";
-          
-          
-          var kFlashVars = "uid=" + name + "&partnerId=" + fullState.get('kalturaPartnerId') + "&ks=" + session + "&afterAddEntry=onContributionWizardAfterAddEntry&close=onContributionWizardClose&showCloseButton=true&Permissions=1";
+          var kFlashVars = "uid=" + name + "&partnerId=" + fullState.get('kalturaPartnerId') + "&ks=" + ksession + "&afterAddEntry=onContributionWizardAfterAddEntry&close=onContributionWizardClose&showCloseButton=true&Permissions=1";
           var kParams = {
                         allowscriptaccess:'always',
                         allownetworking:'all',
@@ -94,11 +175,11 @@
                         };
 
           // Embed Contrib Wizard if the session exists
-          if (fullState.get('kalturaPartnerId')) {
+          //if (session) {
             document.getElementById('kplayer').style.display = "none";
             document.getElementById('kcontribute').style.display = "block";
             gadgets.flash.embedFlash("http://www.kaltura.com/kcw/ui_conf_id/1000741", "kcontribute", "9.0.0", kParams );
-          }
+          //}
         };
 
         function onContributionWizardAfterAddEntry(entries) {
@@ -161,34 +242,28 @@
       
       <div id="kaltura-wave">
         <div id="ksetup" style="display:none;text-align:center">
-          <table align="center">
-            <tr>
-              <td>
-                <p>Kaltura Partner ID</p>
-              </td>
-              <td>
-                <input id="kalturaPartnerId" size="35" value="39061">
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <p>Kaltura Partner Secret</p>
-              </td>
-              <td>
-                <input id="kalturaPartnerSecret" size="35" value="Not Implemented Yet">
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <p><a href="#" onclick="hideSetup()">hide</a></p>
-              </td>
-              <td align="right">
-                <button id="login_button" type="button" onclick="chooseKalturaPartner()">
-                  Login
-                </button>
-              </td>
-            </tr>
-          </table>
+          <div id="kalturasession">
+            <style type="text/css">
+			        body { font-family:arial; }
+			        .form-item { clear:left; display:block; margin:5px 0 0; }
+              .form-label { font-size:12px;color:#666;font-weight:bold;width:130px;display:block;float:left; } 
+              .form-input { font-size:12px;color:#FF22FF;font-weight:bold;width:200px; }
+              .button-link { font-size:32px;color:#5522ff;font-weight:bold;font-family:trebuchet MS; }
+              .logbox { margin-top:10px; }
+            </style>
+            <div class="form-item">
+            <label class="form-label" for="kalturaPartnerId">Kaltura Partner Id:</label>
+            <input class="form-input" id="kalturaPartnerId" type="text" />
+            </div>
+            <div class="form-item">
+              <label class="form-label" for="kalturaPartnerSecret">Kaltura Partner Secret:</label>
+              <input class="form-input" id="kalturaPartnerSecret" type="text" />
+            </div>
+            <p><a href="#" onclick="hideSetup()">hide</a></p>
+            <button id="login_button" type="button" onclick="chooseKalturaPartner()">
+              Login
+            </button>
+          </div>
         </div>
         <div id="kcontribute" style="display:none;height:400px;text-align:center"></div>
         <div id="kplayer" style="display:none;height:310px;text-align:center"></div>
