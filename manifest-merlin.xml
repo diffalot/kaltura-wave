@@ -1,0 +1,9 @@
+<extension 
+name="Kaltura Wave - Papy's Test"
+description="(development) Used to embed shared state media viewing and editing using the Kaltura system"
+thumbnailUrl="http://merlin.lightcorp.net/kaltura-wave/images/kaltura_sun_icon.png">
+  <author name="Papyromancer" email="papyromancer@lightcorp.net"/>
+  <menuHook location="TOOLBAR" text="(dev) Insert Collaborative Media with Kaltura." iconUrl="http://merlin.lightcorp.net/kaltura-wave/images/interactive_video_button.gif">
+    <insertGadget url="http://merlin.lightcorp.net/kaltura-wave/gadget.xml"/>
+  </menuHook>
+</extension>
