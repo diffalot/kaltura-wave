@@ -16,95 +16,7 @@
       <script type="text/javascript" src="http://merlin.lightcorp.net/kaltura-wave/js/flxhr/jquery.xhr.js"></script>
 		  <script type="text/javascript" src="http://merlin.lightcorp.net/kaltura-wave/js/flxhr/flXHR.js"></script>
 		  <script type="text/javascript" src="http://merlin.lightcorp.net/kaltura-wave/js/flxhr/jquery.flXHRproxy.js"></script>
-		  
-      <script type="text/javascript">
-          var ksession = "nothing yet";
-			  /**
-			  * Prepare the JQuery for cross-domain ajax requests via flXHRproxy and register 
-        * the ajax start and end events to the loading gif.
-			  */
-			  jQuery(document).ready(function() {
-				  jQuery.flXHRproxy.registerOptions('http://www.kaltura.com/',{xmlResponseText:true});
-				  jQuery.ajaxSetup({transport:'flXHRproxy'});
-				  $("#loading").hide();
-				  $("#loading").ajaxStart(function(){
-				    $(this).show();
-				  });
-				  $("#loading").ajaxStop(function(){
-				    $(this).hide();
-				  }); 
-			  });
-			  
-			  /**
-			  * Global handler for successful requests. 
-			  */
-			  function successHandler(data,status,XHRobj) {
-				  if (XHRobj.readyState == 4) {
-					  str = "readyState:"+XHRobj.readyState
-							  +"\nresponseText:"+XHRobj.responseText
-							  +"\nstatus:"+XHRobj.status
-							  +"\nstatusText:"+XHRobj.statusText
-							  +"\nSource Object Id: "+XHRobj.instanceId;
-					  kcllog ("Success", str);
-					  kcllog ("KS Generated", $(XHRobj.responseText).find('result').text());
-            ksession = $(XHRobj.responseText).find('result').text();
-            document.getElementById("debugDiv").innerHTML += "<br />" + "in handler: " + ksession + "<br />";
-				  }
-			  }
-			  
-			  /**
-			  * Global handler for errorness requests. 
-			  */
-			  function errorHandler(XHRobj,errtype,errObj) {
-				  str = "Error: "+errObj.number
-					  +"\nType: "+errObj.name
-					  +"\nDescription: "+errObj.description
-					  +"\nSource Object Id: "+errObj.srcElement.instanceId;
-				  kcllog ("Error", str);
-			  }
-			  
-			  /**
-			  * An easy logging method.
-			  */
-			  function kcllog (message, log_data) {
-				  if (console.log) {
-					  console.log (message+":\n"+log_data);
-				  }
-			  } 
-			  
-			  /**
-			  * Client base function to hit the kaltura server with sepcifc service, action and data.
-			  * Results and errors are catched by the successHandler and errorHandler methods.
-			  * @param kaltura_service	The kaltura service to query (e.g. session, user, partner, media, etc).
-			  * @param kaltura_action		The action on the service to call, for example start on the session service.
-			  * @param call_data			The key-value object to pass as the request post data.
-			  */
-			  function kclhit(kaltura_service, kaltura_action, call_data) {
-				  requestObj = $.ajax({ 
-					  type:"POST", 
-					  aysnch:true,
-					  dataType:"xml",
-					  url:"http://www.kaltura.com/api_v3/index.php?service="+kaltura_service+"&action="+kaltura_action, 
-					  data:call_data,
-					  success:successHandler,
-					  error:errorHandler
-				  });
-				  kcllog ("Request", "id: "+requestObj.instanceId+"\nBinary result: "+requestObj.binaryResponseBody+"\nXML result: "+requestObj.xmlResponseText);
-			  }
-
-			  function getKalturaSession (kalturaPartnerId, kalturaPartnerSecret){
-				  getKSData = {
-								  partnerId: kalturaPartnerId,
-								  secret: kalturaPartnerSecret,
-								  userId: name,
-								  expiry: 36000,
-								  privileges: "edit:*",
-								  type: 0
-							  };
-				  kclhit ("session", "start", getKSData);
-			  }
-			
-		  </script>
+		  <script type="text/javascript" src="http://merlin.lightcorp.net/kaltura-wave/js/kaltura-js-client.js"></script>
 		  
       <script type="text/javascript" src="http://wave-api.appspot.com/public/wave.js"></script>
       <script type="text/javascript">
@@ -129,7 +41,7 @@
           }
           else {
             // Display Contribution wizard if no video is stored in the state
-            waveContribute();
+            startContribute();
           }
 
           // Finally Adjust Height
@@ -137,8 +49,7 @@
         }
 
         // Set Kaltura Login Credentials
-        function chooseKalturaPartner() {
-          var state = wave.getState();
+        function loginKalturaPartner() {
           var name = "unknown";
           if (wave.getViewer()) {
             name = wave.getViewer().getDisplayName();
@@ -146,23 +57,31 @@
           var kalturaPartnerId = parseInt(document.getElementById('kalturaPartnerId').value);
           var kalturaPartnerSecret = (document.getElementById('kalturaPartnerSecret').value);
 
-          var session = getKalturaSession(kalturaPartnerId, kalturaPartnerSecret);
-
-          state.submitDelta({ 'kalturaPartnerId' : kalturaPartnerId });
+          getKalturaSession(kalturaPartnerId, kalturaPartnerSecret);
+          
+          document.getElementById('kcontribute').style.display = "block";
+          document.getElementById('ksetup').style.display = "none";
         }
 
         // Contribution Wizard Embed
-        function waveContribute() {
+        function startContribute() {
           
+          document.getElementById('kplayer').style.display = "none";
           fullState = wave.getState();
 
           // Display setup if session is empty
-          if (ksession == "Nothing Yet") {
+          if (ksession == "none") {
+            document.getElementById('kcontribute').style.display = "none";
             document.getElementById('ksetup').style.display = "block";
           }
           else {
-            document.getElementById('ksetup').style.display = "none";
+            showContribute();
           }
+        }
+
+        function showContribute() {
+          {
+            document.getElementById('ksetup').style.display = "none";
 
           var kFlashVars = "uid=" + name + "&partnerId=" + fullState.get('kalturaPartnerId') + "&ks=" + ksession + "&afterAddEntry=onContributionWizardAfterAddEntry&close=onContributionWizardClose&showCloseButton=true&Permissions=1";
           var kParams = {
@@ -175,12 +94,12 @@
                         };
 
           // Embed Contrib Wizard if the session exists
-          //if (session) {
-            document.getElementById('kplayer').style.display = "none";
-            document.getElementById('kcontribute').style.display = "block";
-            gadgets.flash.embedFlash("http://www.kaltura.com/kcw/ui_conf_id/1000741", "kcontribute", "9.0.0", kParams );
-          //}
-        };
+          document.getElementById('kplayer').style.display = "none";
+          document.getElementById('kcontribute').style.display = "block";
+          gadgets.flash.embedFlash("http://www.kaltura.com/kcw/ui_conf_id/1000741", "kcontribute", "9.0.0", kParams );
+          gadgets.window.adjustHeight();
+          }
+        }
 
         function onContributionWizardAfterAddEntry(entries) {
           for(var i = 0; i < entries.length; i++) {
@@ -242,35 +161,45 @@
       
       <div id="kaltura-wave">
         <div id="ksetup" style="display:none;text-align:center">
-          <div id="kalturasession">
-            <style type="text/css">
-			        body { font-family:arial; }
-			        .form-item { clear:left; display:block; margin:5px 0 0; }
-              .form-label { font-size:12px;color:#666;font-weight:bold;width:130px;display:block;float:left; } 
-              .form-input { font-size:12px;color:#FF22FF;font-weight:bold;width:200px; }
-              .button-link { font-size:32px;color:#5522ff;font-weight:bold;font-family:trebuchet MS; }
-              .logbox { margin-top:10px; }
-            </style>
-            <div class="form-item">
-            <label class="form-label" for="kalturaPartnerId">Kaltura Partner Id:</label>
-            <input class="form-input" id="kalturaPartnerId" type="text" />
-            </div>
-            <div class="form-item">
-              <label class="form-label" for="kalturaPartnerSecret">Kaltura Partner Secret:</label>
-              <input class="form-input" id="kalturaPartnerSecret" type="text" />
-            </div>
-            <p><a href="#" onclick="hideSetup()">hide</a></p>
-            <button id="login_button" type="button" onclick="chooseKalturaPartner()">
-              Login
-            </button>
-          </div>
+          <table align="center">
+            <tr>
+              <td colspan="2">
+                <div class="form-item" align="right">
+                  <label class="form-label" for="kalturaPartnerId">Kaltura Partner Id:</label>
+                  <input class="form-input" id="kalturaPartnerId" type="text" />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" align="right">
+                <div class="form-item">
+                  <label class="form-label" for="kalturaPartnerSecret">Kaltura Partner Secret:</label>
+                  <input class="form-input" id="kalturaPartnerSecret" type="text" />
+                </div>
+              </td>
+            <tr>
+              <td>
+                <p><a href="#" onclick="hideSetup()">hide</a></p>
+              </td>
+              <td align="right">
+                <button id="login_button" type="button" onclick="loginKalturaPartner()">
+                  Login*
+                </button>
+              </td>
+            </tr>
+            <tr align="right">
+              <td colspan="2">
+                <p>*Your Login Credentials will not be stored.</p>
+              </td>
+            </tr>
+          </table>
         </div>
         <div id="kcontribute" style="display:none;height:400px;text-align:center"></div>
         <div id="kplayer" style="display:none;height:310px;text-align:center"></div>
         <div id="kedit" style="display:none;text-align:center"></div>
         <p>
           <a href="#" onclick="displaySetup()">Setup</a> 
-          <a href="#" onclick="waveContribute()">Contribute</a> 
+          <a href="#" onclick="startContribute()">Contribute</a> 
           <a href="#" onclick="displayDebug()">Debug</a>
         </p>
       </div>
